@@ -1,5 +1,5 @@
 import { createContext, useState, useEffect } from 'react';
-import { onAuthStateChangedListener } from '../utils/firebase.utils';
+import { onAuthStateChangedListener, createUserDocumentFromAuth } from '../utils/firebase.utils';
 //As the actual value you want to access
 /**
  * Here we build the contest for the provider, where we set the initial context values of the provider. Where in prividerwe use the initial values using the initial state using useState hook or event we can use the useEffect hook to get the value.
@@ -18,7 +18,10 @@ export const UserProvider = ({ children }) => {
     useEffect(() => {
         //This watcher function we need to handle that we need to determine the wather to stop listening to prevent memory leaks
         const unsubscribe = onAuthStateChangedListener((user) => { 
-            console.log('user',user);
+            if (user) {
+                createUserDocumentFromAuth(user);
+            }
+            setCurrentUser(user);
         });
         
         return unsubscribe;

@@ -1,13 +1,11 @@
-import { useState, useContext } from "react";
+import { useState } from "react";
 import { signInWithGooglePopup, createUserDocumentFromAuth, signInAuthUserWithEmailAndPassword } from "../../utils/firebase.utils";
 
 import FormInput from '../form-input/form-input.component';
 import Button from "../button/button.component";
 
-import { UserContext } from "../../context/user.context";
 
 import './sign-in-form.styles.scss';
-
 
 
 const defaultFormFields = {
@@ -20,7 +18,6 @@ const SignInForm = () => {
 
     const { email, password } = formFields;
 
-    const { setCurrentUser } = useContext(UserContext);
 
     const resetFormFields = () => {
         setFormFields(defaultFormFields);
@@ -28,9 +25,7 @@ const SignInForm = () => {
 
     //Async Await 
     const signInWithGoogle = async () => {
-        const { user } = await signInWithGooglePopup();
-        const userDocRef = await createUserDocumentFromAuth(user);
-        return userDocRef;
+       await signInWithGooglePopup();
     }
 
     const handleSubmit = async (event) => {
@@ -45,19 +40,18 @@ const SignInForm = () => {
             const { user } = await signInAuthUserWithEmailAndPassword(email, password);
             console.log(user);
 
-            //Setting the value for the context
-            setCurrentUser(user);
-
             resetFormFields();
         }
         catch (error) {
-            console.log(error);
             switch (error.code) {
                 case 'auth/wrong-password':
                     alert('Incorrect Password for email');
                     break;
                 case 'auth/user-not-found':
                     alert('User with this Email not found');
+                    break;
+                case 'auth/popup-closed-by-user':
+                    alert('Authentication Process Terminated');
                     break;
                 default:
                     console.log(error);
@@ -77,14 +71,13 @@ const SignInForm = () => {
         setFormFields({ ...formFields, [name]: value });
     }
 
-    console.log(formFields);
+    //console.log(formFields);
 
     return (
         <div className="sign-up-container">
             <h2>Already have an account ?</h2>
             <span>Sign up with your email and passoword</span>
             <form onSubmit={handleSubmit}>
-
 
                 <FormInput
                     label="Email"
