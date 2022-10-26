@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { getRedirectResult } from 'firebase/auth';
 
-import { auth, signInWithGooglePopup, signInWithGoogleRedirect, createUserDocumentFromAuth } from '../../../utils/firebase.utils';
+import { auth, createUserDocumentFromAuth } from '../../../utils/firebase.utils';
 
 import SignUpForm from '../../sign-up-form/sign-up-form.component';
 import SignInForm from '../../sign-in-form/sign-in-form.component';
@@ -15,7 +15,7 @@ const Authentication = () => {
             const response = await getRedirectResult(auth);
             //console.log(response);
             if (response) {
-                const userDocRef = await createUserDocumentFromAuth(response.user);
+                await createUserDocumentFromAuth(response.user);
             }
         }
         getGoogleRedirectResult();

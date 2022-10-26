@@ -4,7 +4,7 @@ import { initializeApp } from "firebase/app";
 
 import { getAuth, signInWithRedirect, signInWithPopup, GoogleAuthProvider, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from 'firebase/auth';
 
-import { getFirestore, doc, getDoc, setDoc } from 'firebase/firestore';
+import { getFirestore, doc, getDoc, setDoc, collection, writeBatch, query, getDocs } from 'firebase/firestore';
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -39,6 +39,37 @@ export const signInWithGooglePopup = () => signInWithPopup(auth, googleprovider)
 export const signInWithGoogleRedirect = () => signInWithRedirect(auth, googleprovider);
 
 export const db = getFirestore();
+
+
+//Upload data to Firestore
+export const addCollectionAndDocuments = async (collectionKey, objectsToAdd) => {
+    const collectionRef = collection(db, collectionKey);
+    const batch = writeBatch(db);
+
+    objectsToAdd.forEach((object) => {
+        const docRef = doc(collectionRef, object.title.toLowerCase());
+        batch.set(docRef, object);
+    });
+
+    await batch.commit();
+    console.log('done');
+};
+
+
+//get collections adata from firestore
+export const getCategoriesAndDocuments = async () => {
+    const collectionref = collection(db, 'categories');
+
+    const q = query(collectionref);
+    const querySnapshot = await getDocs(q);
+    const categoryMap = querySnapshot.docs.reduce((accumulator, docSnapshot) => {
+        const { title, items } = docSnapshot.data();
+        accumulator[title.toLowerCase()] = items;
+        return accumulator;
+    }, {});
+
+    return categoryMap;
+}
 
 
 // Email sign up functinaity is merged as in email and password fiebas dont have dispalay name, and if iit will have it will override - dig deep to chck this functionality - and it will not allow to create user with same name
