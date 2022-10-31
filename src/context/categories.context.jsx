@@ -3,7 +3,7 @@ import { createContext, useState, useEffect } from "react";
 //import { addCollectionAndDocuments } from '../utils/firebase.utils';
 
 //Get data
-import { getCategoriesAndDocuments } from '../utils/firebase.utils';
+import { getCategoriesAndDocuments } from '../utils/firebase/firebase.utils';
 
 //import SHOP_DATA from '../shop-data.js';
 
