@@ -1,10 +1,12 @@
 import { Fragment, useContext } from "react";
 import { Outlet } from "react-router-dom";
 
+import { useSelector } from 'react-redux';
+
 import CartIcon from '../../../components/cart-icon/cart-icon.component';
 import CartDropdown from "../../cart-dropdown/cart-dropdown.component";
 
-import { UserContext } from "../../../context/user.context";
+//import { UserContext } from "../../../context/user.context";
 import { CartContext } from "../../../context/cart.context";
 
 import { signOutUser } from "../../../utils/firebase/firebase.utils";
@@ -14,14 +16,18 @@ import { ReactComponent as CrwnLogo } from '../../../assets/crown.svg';
 
 
 
-
 const Navigation = () => {
     //Here we are accessing the actual value NOT setting
     //We set the value using the setter function where we want to set the value
-    const { currentUser } = useContext(UserContext);
+    //const { currentUser } = useContext(UserContext);
     const { isCartOpen } = useContext(CartContext);
 
-    console.log('currentUser', currentUser);
+    const { currentUser } = useSelector((state) => {
+        console.log(state.users, '<----')
+        return state.users;
+    });
+
+    console.log('currentUser=>>>>>>>>', currentUser);
 
     return (
         <Fragment>

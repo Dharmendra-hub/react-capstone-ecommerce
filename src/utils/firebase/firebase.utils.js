@@ -22,7 +22,7 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-const firebaseApp = initializeApp(firebaseConfig);
+initializeApp(firebaseConfig);
 //const analytics = getAnalytics(firebaseApp);
 
 
@@ -72,7 +72,7 @@ export const getCategoriesAndDocuments = async () => {
 }
 
 
-// Email sign up functinaity is merged as in email and password fiebas dont have dispalay name, and if iit will have it will override - dig deep to chck this functionality - and it will not allow to create user with same name
+// Email sign up functinaity is merged as in email and password firebase dont have dispalay name, and if iit will have it will override - dig deep to chck this functionality - and it will not allow to create user with same name
 export const createUserDocumentFromAuth = async (userAuth, additionalInformation = []) => {
     //Extra Protection
     if (!userAuth) return;

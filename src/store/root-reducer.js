@@ -1,5 +1,7 @@
-import { combineReducers } from "redux";
+//import { userReducer } from '../store/user/user.reducer';
+import userReducer from './features/user.features.slice';
 
-export const rootReducer = combineReducers({
-
-});
+//Passing arguments to combine reducers as Object
+export const rootReducer = {
+    users: userReducer
+};
